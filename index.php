@@ -21,96 +21,66 @@ $supabase = new Supabase\CreateClient(
     $reference_id
 );   
 
-$message = null;
-$data = null;
+$username = null;
+$password = null;
 $error = null;
+$data = null;
 
-if (array_key_exists('REQUEST_METHOD', $_SERVER) && $_SERVER['REQUEST_METHOD'] === 'POST' && array_key_exists('post_text', $_POST)) {
-    try {
-        $post_text = trim($_POST['post_text']);
-        
-        if (empty($post_text)) {
-            $error = 'Post text cannot be empty';
-        } else {
-            // Insert the new post
-            $supabase->query->from('Posts')->insert([
-                'post_text' => $post_text
-            ])->execute();
-            
-            $message = 'Post added successfully!';
-        }
-    } catch (Exception $e) {
-        $error = 'Error adding post: ' . $e->getMessage();
-    }
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-//actual query to get posts from database
-try {
-    $response = $supabase->query->from('Posts')->select('*')->execute();
-    $data = $response->data;
-} catch (Exception $e) {
-    $error = $e->getMessage();
-}
+  $username = trim(strip_tags($_POST["username"] ?? ''));
+  
+  if ($username === '') {
+    $error = 'Please enter username';
 
-//debug: see what we got from database
-try {
-    $response = $supabase->query->from('Posts')->select('*')->execute();
-    $data = $response->data;
-    
-    // Debug: see what we got
-    ?>
-    <p>
-        Debug: <?= print_r($data) ?>
-    </p>
-    <?php
+  }
+  else {
+  $query = $supabase->query
+      ->from('user')
+      ->select('*')
+      ->eq('userUsername', $username)
+      ->execute();
 
-} catch (Exception $e) {
-    $error = $e->getMessage();
+  if (is_object($query) && method_exists($query, 'getBody')) {
+      $body = json_decode((string)$query->getBody(), true);
+      $data = $body['data'][0] ?? null;
+  } else {
+      $data = $query->data[0] ?? null;
+  }
+  }
 }
 
 ?>
-<!DOCTYPE html>
+
+
+
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="/css/main.css">
-
-    <title>Supabase Test</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Login</title>
 </head>
 <body>
-    <h1>Supabase Test</h1>
+  <p>RESULTS: <?= $data['userPassword'] ?><p>
 
-    <?= signUpForm('index.php'); ?>
-    
+  <div class="card" role="main">
+    <h1>Sign In</h1>
 
-    <?php if ($message): ?>
-        <p> <?=htmlspecialchars($message) ?> </p>
-    <?php endif; ?>
-    
-    <?php if ($error): ?>
-        <p> <?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
-    
-    <form method="POST">
-        <textarea name="post_text" placeholder="Enter your post text" required="required" rows="4"></textarea>
-        <button type="submit">Add Post</button>
+    <form method = "post" id="loginForm" action="<?= htmlentities($_SERVER["PHP_SELF"], ENT_QUOTES) ?>">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required="required"/>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+      </div>
+      <button class="btn" type="submit">Log in</button>
     </form>
-    
-    <h2>Posts</h2>
-    <?php if (!empty($data)): ?>
-        <ul>
-            <?php foreach ($data as $post): ?>
-                <li>
-                <?= htmlspecialchars($post['post_text'] ?? 'Empty post') ?> 
-                <small>(<?= htmlspecialchars($post['created_at']) ?>)</small>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    <?php else: ?>
-        <p>No posts yet.</p>
-    <?php endif; ?>
+
+    <div id="welcome" class="welcome" aria-live="polite"></div>
+    <p class="meta">Demo credentials: <strong>admin / password</strong></p>
+  </div>
 </body>
 </html>
