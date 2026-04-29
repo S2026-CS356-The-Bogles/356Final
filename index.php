@@ -1,6 +1,13 @@
 <?php
+session_start();
 
 require 'vendor/autoload.php';
+require_once 'helpers/checkLogin.php';
+require_once 'helpers/sessionTimer.php';
+
+checkLogin(); // Check if the user is logged in
+
+sessionTimer();
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
