@@ -1,85 +1,12 @@
 <?php
 session_start();
 
-require 'vendor/autoload.php';
-require_once 'helpers/checkLogin.php';
-require_once 'helpers/sessionTimer.php';
-require_once 'helpers/formBuilder.php';
+require 'helpers/checkLogin.php';
+require 'helpers/sessionTimer.php';
 
-//checkLogin(); // Check if the user is logged in
-
+checkLogin();
 sessionTimer();
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-$url = $_ENV['SUPABASE_URL'];
-$reference_id = preg_replace('|https?://(.+?)\.supabase\.co|', '$1', $url);
-
-$supabase = new Supabase\CreateClient(
-    $_ENV['SUPABASE_KEY'],    
-    $reference_id
-);   
-
-$username = null;
-$password = null;
-$username = null;
-$password = null;
-$error = null;
-$data = null;
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-
-  $username = trim(strip_tags($_POST["username"] ?? ''));
-  
-  if ($username === '') {
-    $error = 'Please enter username';
-
-  }
-  else {
-  $query = $supabase->query
-      ->from('user')
-      ->select('*')
-      ->eq('userUsername', $username)
-      ->execute();
-
-  if (is_object($query) && method_exists($query, 'getBody')) {
-      $body = json_decode((string)$query->getBody(), true);
-      $data = $body['data'][0] ?? null;
-  } else {
-      $data = $query->data[0] ?? null;
-  }
-  
-  $password = $_POST['password'] ?? '';
-
-  if ($data == null) {
-    $error = 'User not found';
-    
-  }
-  else {
-    $stored_pass = $data['userPassword'];
-
-    if($stored_pass !== '' and password_verify($password, $stored_pass))
-    {
-      $password_confirmed = true;
-    }
-    elseif($password == $stored_pass)
-    {
-      $password_confirmed = true;
-    }
-    else {
-      $error = 'wrong password';
-    }
-
-  }
-
-  }
-}
-
 ?>
-
-
 
 <!doctype html>
 <html lang="en">
@@ -87,36 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Simple Login</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Simple Login</title>
+
+  <link rel="stylesheet" href="../css/main.css" />
 </head>
 <body>
-  <p>RESULTS: <?= $error ?><p>
-
-  <div class="card" role="main">
-    <h1>Sign In</h1>
-
-    
-
-    <form method = "post" id="loginForm" action="<?= htmlentities($_SERVER["PHP_SELF"], ENT_QUOTES) ?>">
-      <div class="field">
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" required="required"/>
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
-      </div>
-      <button class="btn" type="submit">Log in</button>
-    </form>
-
-    <div id="welcome" class="welcome" aria-live="polite"></div>
-    <p class="meta">Demo credentials: <strong>admin / password</strong></p>
-  </div>
-
-    <div id="welcome" class="welcome" aria-live="polite"></div>
-    <p class="meta">Demo credentials: <strong>admin / password</strong></p>
-  </div>
+    <h1>
+        Welcome, <?= $_SESSION['username'] ?>
+    </h1>
 </body>
 </html>

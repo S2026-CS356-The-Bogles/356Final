@@ -4,3 +4,13 @@ form {
     gap: 1em;
     align-items: center;
 }
+
+h1 {
+    text-align: center;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    font-size: 2em;
+}
