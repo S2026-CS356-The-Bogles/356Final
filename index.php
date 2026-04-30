@@ -1,3 +1,4 @@
+// main landing page for the website
 <?php
 session_start();
 

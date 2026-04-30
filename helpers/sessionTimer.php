@@ -1,3 +1,6 @@
+// keeps track of the last interaction from the user
+// if longer than the specified timeout, session is destroyed
+// user will be sent to the login page
 <?php
 
 function sessionTimer() {

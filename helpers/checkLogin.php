@@ -1,3 +1,4 @@
+// makes sure that the user has logged in through the login.php page
 <?php
 
 function checkLogin() {

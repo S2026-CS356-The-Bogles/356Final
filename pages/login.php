@@ -1,3 +1,5 @@
+// main page for logging users into the website
+// if user is already logged in, redirects them to the index (main) page
 <?php
 session_start();
 
