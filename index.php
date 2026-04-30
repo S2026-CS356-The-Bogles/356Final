@@ -18,6 +18,9 @@ sessionTimer();
   <link rel="stylesheet" href="../css/main.css" />
 </head>
 <body>
+    <?php
+    include 'helpers/header.html';
+    ?>
     <h1>
         Welcome, <?= $_SESSION['username'] ?>
     </h1>
