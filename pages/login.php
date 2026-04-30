@@ -38,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   }
   else {
   $query = $supabase->query
-      ->from('user')
+      ->from('system_user')
       ->select('*')
-      ->eq('userUsername', $username)
+      ->eq('user_username', $username)
       ->execute();
 
   if (is_object($query) && method_exists($query, 'getBody')) {
@@ -56,19 +56,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $error = 'User not found';
   }
   else {
-    $stored_pass = $data['userPassword'];
+    $stored_pass = $data['user_password'];
 
     if($stored_pass !== '' and password_verify($password, $stored_pass))
     {
       $password_confirmed = true;
-      $_SESSION['user_id'] = $data['userID'];
-      $_SESSION['username'] = $data['userUsername'];
+      $_SESSION['user_id'] = $data['user_id'];
+      $_SESSION['username'] = $data['user_username'];
+      header('Location: welcome.php');
+      exit();
     }
     elseif($password == $stored_pass)
     {
       $password_confirmed = true;
-      $_SESSION['user_id'] = $data['userID'];
-      $_SESSION['username'] = $data['userUsername'];
+      $_SESSION['user_id'] = $data['user_id'];
+      $_SESSION['username'] = $data['user_username'];
+      header('Location: welcome.php');
+      exit();
     }
     else {
       $error = 'wrong password';
