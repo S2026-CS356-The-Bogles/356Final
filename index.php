@@ -1,6 +1,14 @@
 <?php
+session_start();
 
 require 'vendor/autoload.php';
+require_once 'helpers/checkLogin.php';
+require_once 'helpers/sessionTimer.php';
+require_once 'helpers/formBuilder.php';
+
+//checkLogin(); // Check if the user is logged in
+
+sessionTimer();
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -15,8 +23,11 @@ $supabase = new Supabase\CreateClient(
 
 $username = null;
 $password = null;
+$username = null;
+$password = null;
 $error = null;
 $data = null;
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -39,6 +50,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   } else {
       $data = $query->data[0] ?? null;
   }
+  
+  $password = $_POST['password'] ?? '';
+
+  if ($data == null) {
+    $error = 'User not found';
+    
+  }
+  else {
+    $stored_pass = $data['userPassword'];
+
+    if($stored_pass !== '' and password_verify($password, $stored_pass))
+    {
+      $password_confirmed = true;
+    }
+    elseif($password == $stored_pass)
+    {
+      $password_confirmed = true;
+    }
+    else {
+      $error = 'wrong password';
+    }
+
+  }
+
   }
 }
 
@@ -52,12 +87,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Simple Login</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Login</title>
 </head>
 <body>
-  <p>RESULTS: <?= $data['userPassword'] ?><p>
+  <p>RESULTS: <?= $error ?><p>
 
   <div class="card" role="main">
     <h1>Sign In</h1>
+
+    
 
     <form method = "post" id="loginForm" action="<?= htmlentities($_SERVER["PHP_SELF"], ENT_QUOTES) ?>">
       <div class="field">
@@ -70,6 +110,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       </div>
       <button class="btn" type="submit">Log in</button>
     </form>
+
+    <div id="welcome" class="welcome" aria-live="polite"></div>
+    <p class="meta">Demo credentials: <strong>admin / password</strong></p>
+  </div>
 
     <div id="welcome" class="welcome" aria-live="polite"></div>
     <p class="meta">Demo credentials: <strong>admin / password</strong></p>
