@@ -1,6 +1,6 @@
+<?php
 // helper file that will store modular pages for future use
 // will be related to each type of account for better page readability in the future
-<?php
 
 function signUpForm($targetPage) {
     $form = '

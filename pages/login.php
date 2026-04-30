@@ -1,6 +1,7 @@
+<?php
 // main page for logging users into the website
 // if user is already logged in, redirects them to the index (main) page
-<?php
+
 session_start();
 
 require '../vendor/autoload.php';
@@ -25,7 +26,7 @@ $data = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
   if (array_key_exists('user_id', $_SESSION)) {
-    header('Location: ../index.php');
+    header('Location: welcome.php');
     exit();
   }
 
