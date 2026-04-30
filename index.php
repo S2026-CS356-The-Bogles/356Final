@@ -26,6 +26,7 @@ $password = null;
 $error = null;
 $data = null;
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
   $username = trim(strip_tags($_POST["username"] ?? ''));
@@ -47,6 +48,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   } else {
       $data = $query->data[0] ?? null;
   }
+  
+  $password = $_POST['password'] ?? '';
+
+  if ($data == null) {
+    $error = 'User not found';
+    
+  }
+  else {
+    $stored_pass = $data['userPassword'];
+
+    if($stored_pass !== '' and password_verify($password, $stored_pass))
+    {
+      $password_confirmed = true;
+    }
+    elseif($password == $stored_pass)
+    {
+      $password_confirmed = true;
+    }
+    else {
+      $error = 'wrong password';
+    }
+
+  }
+
   }
 }
 
@@ -62,10 +87,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   <title>Simple Login</title>
 </head>
 <body>
-  <p>RESULTS: <?= $data['userPassword'] ?><p>
+  <p>RESULTS: <?= $error ?><p>
 
   <div class="card" role="main">
     <h1>Sign In</h1>
+
+    
 
     <form method = "post" id="loginForm" action="<?= htmlentities($_SERVER["PHP_SELF"], ENT_QUOTES) ?>">
       <div class="field">
