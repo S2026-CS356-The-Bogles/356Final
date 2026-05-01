@@ -5,7 +5,7 @@
 
 function sessionTimer() {
 
-    $session_timeout = 60; // 1800 = 30 minutes
+    $session_timeout = 1800; // 1800 = 30 minutes
 
     if (isset($_SESSION["last_activity"])) {
         $elapsed_time = time() - $_SESSION["last_activity"];

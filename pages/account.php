@@ -15,12 +15,12 @@ sessionTimer();
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Welcome page</title>
+  <title>Account Info</title>
 
-  <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/main.css" />
 </head>
-<body class="main-content">
+<body>
     <?php
     if (array_key_exists('username', $_SESSION)) {
         ?>
@@ -33,7 +33,7 @@ sessionTimer();
     }
     ?>
     <h1>
-        Welcome, <?= $_SESSION['username'] ?>
+        Account Information
     </h1>
 </body>
 <?php
