@@ -35,6 +35,22 @@ sessionTimer();
     <h1>
         Welcome, <?= $_SESSION['username'] ?>
     </h1>
+
+    <div id="welcome-section">
+        <h2>
+            What would you like to do?
+        </h2>
+
+        <ul id="welcome-options" class="account-actions">
+            <!--temporary links REPLACE!!! 
+            Make them register if account is NOT a specific type
+            and if they are, make it go to the main page for that type-->
+            <li> <a href="#"> Get Tickets </a> </li>
+            <li> <a href="#"> Exhibitor Home </a> </li>
+            <li> <a href="#"> Speaker Home </a> </li>
+            <li> <a href="#"> Organizer Home </a> </li>
+        </ul>
+    </div>
 </body>
 <?php
 include_once '../helpers/footer.html';
