@@ -43,25 +43,25 @@ sessionTimer();
                 <article class="dashboard-card">
                     <h3>Events</h3>
                     <p>Browse or register for upcoming events.</p>
-                    <a href="event-registration.php" class="btn">Go to Events</a>
+                    <a href="#" class="btn">Go to Events</a>
                 </article>
 
                 <article class="dashboard-card">
                     <h3>Observe</h3>
                     <p>Access attendee-facing event views and updates.</p>
-                    <a href="attendee-home.php" class="btn">Go to Observe</a>
+                    <a href="#" class="btn">Go to Observe</a>
                 </article>
 
                 <article class="dashboard-card">
                     <h3>Speakers</h3>
                     <p>Register as a speaker and manage proposal information.</p>
-                    <a href="speaker-registration.php" class="btn">Go to Speakers</a>
+                    <a href="pages/speakerHome.php" class="btn">Go to Speakers</a>
                 </article>
 
                 <article class="dashboard-card">
-                    <h3>Organize</h3>
-                    <p>Create and manage event-related organizer tools.</p>
-                    <a href="organizer-home.php" class="btn">Go to Organize</a>
+                    <h3>Exhibitors</h3>
+                    <p>Create and manage exhibit-related information.</p>
+                    <a href="pages/exhibitorHome.php" class="btn">Go to Exhibitors</a>
                 </article>
 
             </section>

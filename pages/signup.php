@@ -3,12 +3,6 @@
 require '../vendor/autoload.php';
 require_once '../helpers/supabase.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
-
-$url = $_ENV['SUPABASE_URL'];
-$reference_id = preg_replace('|https?://(.+?)\.supabase\.co|', '$1', $url);
-
 $supabase = initializeSupabase();
 
 $username = null;

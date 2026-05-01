@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$pageTitle = "Exhibitor Home";
+$pageTitle = "Speaker Home";
 
 require_once '../helpers/checkLogin.php';
 require_once '../helpers/sessionTimer.php';
@@ -12,9 +12,8 @@ require_once '../helpers/supabase.php';
 
 $supabase = initializeSupabase();
 
-//UNCOMMENT FOR PRODUCTION
-//checkLogin();
-//sessionTimer();
+checkLogin();
+sessionTimer();
 
 $org_name = null;
 $org_industry = null;
@@ -26,53 +25,25 @@ function sanitize($value) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $org_name = sanitize($_POST['org_name']);
-    $org_industry = sanitize($_POST['org_industry']);
 
-    if($org_name == null || $org_industry == null){
-        $message = "All fields required";
-    }
-
-    $response = $supabase->from('exhibitor_organization')->insert([
-                'organization_name'=> $org_name,
-                'organization_industry'=> $org_industry
+    $response = $supabase->from('user_speaker')->insert([
+                'speaker_id'=> $_SESSION['user_id']
             ])->execute();
-
-    $query = $supabase->query
-      ->from('exhibitor_organization')
-      ->select('*')
-      ->eq('organization_name', $org_name)
-      ->execute();
-
-    $data = parseQuery($query);
-
-    if ($data['organization_id']) {
-
-    $response = $supabase->from('user_exhibitor')->insert([
-                'exhibitor_id'=> $_SESSION['user_id'],
-                'organization_id'=> $data['organization_id']
-            ])->execute();
-    }
-    else
-    {
-        $error = 'could not get organization id';
-    }
-    
 }
 
 if (array_key_exists('user_id', $_SESSION)) {
     $user_id = $_SESSION['user_id'];
 
     $query = $supabase->query
-        ->from('user_exhibitor')
+        ->from('user_speaker')
         ->select('*')
-        ->eq('exhibitor_id', $user_id)
+        ->eq('speaker_id', $user_id)
         ->execute();
 
     $data = parseQuery($query);
 
-    if (!$data['exhibitor_id']) {
-        $form = registerExhibitorForm('exhibitorHome.php');
+    if (!$data['speaker_id']) {
+        $form = registerSpeakerForm('speakerHome.php');
     }
 }
 ?>
@@ -123,22 +94,22 @@ if (array_key_exists('user_id', $_SESSION)) {
         </p>
 
             <section class="hero-section">
-                <h1>Exhibitor Home</h1>
+                <h1>Speaker Home</h1>
             </section>
 
             <!-- Main role / feature navigation based on your wireframe -->
             <section class="dashboard-grid">
 
                 <article class="dashboard-card">
-                    <h2> Booth Request </h2>
-                    <p> Request a booth space for a given event. </p>
-                    <a href="#" class="btn">Go to Booths</a>
+                    <h2> Stage Request </h2>
+                    <p> Request a stage space for a given event. </p>
+                    <a href="#" class="btn">Go to Stage Requests</a>
                 </article>
 
                 <article class="dashboard-card">
-                    <h2> Booth Status </h2>
-                    <p> View status of previous booth requests. </p>
-                    <a href="#" class="btn">Go to Booth Status</a>
+                    <h2> Proposal Status </h2>
+                    <p> View status of previous stage requests. </p>
+                    <a href="#" class="btn">Go to Proposals</a>
                 </article>
 
             </section>
