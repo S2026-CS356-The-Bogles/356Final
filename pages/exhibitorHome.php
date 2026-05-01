@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Skeleton";
+$pageTitle = "Exhibitor Home";
 
 require_once '../helpers/checkLogin.php';
 require_once '../helpers/sessionTimer.php';
