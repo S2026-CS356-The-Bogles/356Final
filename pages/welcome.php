@@ -21,17 +21,17 @@ sessionTimer();
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body class="main-content">
-    <?php
+<?php
     if (array_key_exists('username', $_SESSION)) {
         ?>
             <?=makeHeader("loggedIn");?>
         <?php
     } else {
-        ?>
-            <?=makeHeader("loggedOut");?> 
-        <?php   
-    }
     ?>
+            <?=makeHeader("loggedOut");?>
+    <?php   
+    }
+?>
     <h1>
         Welcome, <?= $_SESSION['username'] ?>
     </h1>
@@ -46,7 +46,7 @@ sessionTimer();
             Make them register if account is NOT a specific type
             and if they are, make it go to the main page for that type-->
             <li> <a href="#"> Get Tickets </a> </li>
-            <li> <a href="#"> Exhibitor Home </a> </li>
+            <li> <a href="exhibitorHome.php"> Exhibitor Home </a> </li>
             <li> <a href="#"> Speaker Home </a> </li>
             <li> <a href="#"> Organizer Home </a> </li>
         </ul>

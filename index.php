@@ -21,18 +21,14 @@ sessionTimer();
 <?php
     if (array_key_exists('username', $_SESSION)) {
         ?>
-        <p>
             <?=makeHeader("loggedIn");?>
-        </p>
         <?php
     } else {
-     ?>
-        <p>
-            <?=makeHeader("loggedOut");?>
-        </p>
-        <?php   
-    }
     ?>
+            <?=makeHeader("loggedOut");?>
+    <?php   
+    }
+?>
 <body>
     <main class="main-content">
             <section class="hero-section">

@@ -1,6 +1,7 @@
 <?php
 
 require '../vendor/autoload.php';
+require_once '../helpers/supabase.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
@@ -8,10 +9,7 @@ $dotenv->load();
 $url = $_ENV['SUPABASE_URL'];
 $reference_id = preg_replace('|https?://(.+?)\.supabase\.co|', '$1', $url);
 
-$supabase = new Supabase\CreateClient(
-    $_ENV['SUPABASE_KEY'],
-    $reference_id
-);
+$supabase = initializeSupabase();
 
 $username = null;
 $user_fnam = null;

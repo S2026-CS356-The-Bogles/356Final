@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $pageTitle = "Skeleton";
 
 require_once '../helpers/checkLogin.php';
@@ -21,30 +23,22 @@ require_once '../helpers/header.php';
     <link href="../css/styles.css"
           type="text/css" rel="stylesheet" />
 </head>
+<body>
+<!-- Header -->
 <?php
     if (array_key_exists('username', $_SESSION)) {
         ?>
-        <p>
             <?=makeHeader("loggedIn");?>
-        </p>
         <?php
     } else {
-     ?>
-        <p>
+    ?>
             <?=makeHeader("loggedOut");?>
-        </p>
-        <?php   
+    <?php   
     }
 ?>
-<body>
 
     <!-- Main page wrapper -->
     <div class="page-container">
-
-        <!-- Site header -->
-        <header class="site-header">
-            
-        </header>
 
         <!-- Navigation / page intro -->
         <main class="main-content">
@@ -56,9 +50,7 @@ require_once '../helpers/header.php';
             <section class="dashboard-grid">
 
                 <article class="dashboard-card">
-                    <h3>Events</h3>
-                    <p>Browse or register for upcoming events.</p>
-                    <a href="event-registration.php" class="btn">Go to Events</a>
+                   
                 </article>
 
             </section>
