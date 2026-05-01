@@ -17,9 +17,6 @@ $user_lname = null;
 $email = null;
 $password = null;
 $is_observer = null;
-$is_exhibitor = null;
-$is_speaker = null;
-$is_organizer = null;
 
 
 function sanitize($value) {
@@ -39,10 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     $password = $_POST['password'];
-    $is_observer = isset($_POST['is_observer']) ?? null;
-    $is_exhibitor = isset($_POST['is_exhibitor']) ?? null;
-    $is_speaker = isset($_POST['is_speaker']) ?? null;
-    $is_organizer = isset($_POST['is_organizer']) ?? null;
+    $is_observer = true;
 
 
     if($username == null || $user_fname == null || $user_lname == null || $email == null || $password == null){
@@ -58,10 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 'user_lname'=> $user_lname,
                 'user_email'=> $email,
                 'user_password'=> $hashed_password,
-                'is_observer'=> $is_observer,
-                'is_exhibitor'=> $is_exhibitor,
-                'is_speaker'=> $is_speaker,
-                'is_organizer'=> $is_organizer
+                'is_observer'=> $is_observer
             ])->execute();
 
 
@@ -100,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sign Up</title>
 </head>
 <body>
+    <?=  $message = '' ?>
     <div class="signup-container">
         <p class="error">
             <?= $message ?>
@@ -132,23 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <div class="form-group">
-                <p>Account Type:</p>
-                    
-                <input type="checkbox" id="observer" name="is_observer" value="observer">
-                <label for="observer">Observer</label><br>
-
-                <input type="checkbox" id="exhibitor" name="is_exhibitor" value="exhibitor">
-                <label for="exhibitor">Exhibitor</label><br>
-
-                <input type="checkbox" id="speaker" name="is_speaker" value="speaker">
-                <label for="speaker">Speaker</label><br>
-
-                <input type="checkbox" id="organizer" name="is_organizer" value="organizer">
-                <label for="organizer">Organizer</label><br>
-
-
-            </div>
+            
 
             <button type="submit">Sign Up</button>
         </form>
