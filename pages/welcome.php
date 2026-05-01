@@ -4,6 +4,7 @@ session_start();
 
 require '../helpers/checkLogin.php';
 require '../helpers/sessionTimer.php';
+require_once '../helpers/header.php';
 
 checkLogin();
 sessionTimer();
@@ -20,7 +21,19 @@ sessionTimer();
 </head>
 <body>
     <?php
-    include 'helpers/header.html';
+    if (array_key_exists('username', $_SESSION)) {
+        ?>
+        <p>
+            <?=makeHeader("loggedIn");?>
+        </p>
+        <?php
+    } else {
+     ?>
+        <p>
+            <?=makeHeader("loggedOut");?>
+        </p>
+        <?php   
+    }
     ?>
     <h1>
         Welcome, <?= $_SESSION['username'] ?>
