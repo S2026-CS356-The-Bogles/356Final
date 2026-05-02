@@ -45,7 +45,7 @@ sessionTimer();
             <!--temporary links REPLACE!!! 
             Make them register if account is NOT a specific type
             and if they are, make it go to the main page for that type-->
-            <li> <a href="#"> Get Tickets </a> </li>
+            <li> <a href="observerHome.php"> Get Tickets </a> </li>
             <li> <a href="exhibitorHome.php"> Exhibitor Home </a> </li>
             <li> <a href="#"> Speaker Home </a> </li>
             <li> <a href="#"> Organizer Home </a> </li>
