@@ -47,7 +47,7 @@ sessionTimer();
             and if they are, make it go to the main page for that type-->
             <li> <a href="observerHome.php"> Get Tickets </a> </li>
             <li> <a href="exhibitorHome.php"> Exhibitor Home </a> </li>
-            <li> <a href="#"> Speaker Home </a> </li>
+            <li> <a href="speakerHome.php"> Speaker Home </a> </li>
             <li> <a href="#"> Organizer Home </a> </li>
         </ul>
     </div>
