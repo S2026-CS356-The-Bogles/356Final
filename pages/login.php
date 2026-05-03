@@ -50,6 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       $password_confirmed = true;
       $_SESSION['user_id'] = $data['user_id'];
       $_SESSION['username'] = $data['user_username'];
+      $_SESSION['is_speaker'] = $data['is_speaker'];
+      $_SESSION['is_exhibitor'] = $data['is_exhibitor'];
+      $_SESSION['is_organizer'] = $data['is_organizer'];
       header('Location: welcome.php');
       exit();
     }
@@ -58,6 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       $password_confirmed = true;
       $_SESSION['user_id'] = $data['user_id'];
       $_SESSION['username'] = $data['user_username'];
+      $_SESSION['is_speaker'] = $data['is_speaker'];
+      $_SESSION['is_exhibitor'] = $data['is_exhibitor'];
+      $_SESSION['is_organizer'] = $data['is_organizer'];
       header('Location: welcome.php');
       exit();
     }

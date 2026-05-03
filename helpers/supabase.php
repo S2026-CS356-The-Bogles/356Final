@@ -25,4 +25,21 @@ function parseQuery($query){
 
   return $data;
 }
+
+function parseQueryArray($query){
+    if (is_object($query) && method_exists($query, 'getBody')) {
+      $body = json_decode((string)$query->getBody(), true);
+      $data = $body['data'] ?? null;
+  } else {
+      $data = $query->data ?? null;
+  }
+
+  return $data;
+}
+
+function formatTime($timestamp){
+    $date = new DateTime($timestamp);
+    $date->setTimezone(new DateTimeZone('America/Los_Angeles'));
+    return $date->format('M j, Y g:i A T');
+}
 ?>
