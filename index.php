@@ -49,7 +49,7 @@ sessionTimer();
                 <article class="dashboard-card">
                     <h3>Observe</h3>
                     <p>Access attendee-facing event views and updates.</p>
-                    <a href="#" class="btn">Go to Observe</a>
+                    <a href="pages/observerHome.php" class="btn">Go to Observe</a>
                 </article>
 
                 <article class="dashboard-card">

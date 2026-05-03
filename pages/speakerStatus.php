@@ -1,31 +1,45 @@
 <?php
 session_start();
 
-$pageTitle = "Observer Home";
+
 
 require_once '../helpers/checkLogin.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once '../helpers/sessionTimer.php';
 require_once '../helpers/header.php';
-require_once '../helpers/formBuilder.php';
-require_once '../vendor/autoload.php';
 require_once '../helpers/supabase.php';
+
+$pageTitle = "Your Submissions";
 
 $supabase = initializeSupabase();
 
-checkLogin();
-sessionTimer();
+//checkLogin();
+//sessionTimer();
 
-$query = $supabase->query
-         ->from('event')
-         ->select('*')
-         //->gte('event_start_time', date('Y-m-d\TH:i:sP'))
-         ->order('event_start_time', ['ascending' => true])
-         ->execute();
 
-$data = parseQuery($query);
 
+if ($_SESSION['is_speaker']) {
+    //
+    
+    $current_event_query = $supabase->from('event')
+                           ->select('event_id')
+                           ->execute();
+
+    $current_event = parseQuery($current_event_query);
+    $event_id = $current_event['event_id'];
+
+    $proposals_query = $supabase->query
+        ->from('proposal')
+        ->select('*')
+        ->eq('speaker_id', $_SESSION['user_id'])
+        ->execute();
+
+    $proposal = parseQueryArray($proposals_query);
+}
 
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,47 +69,36 @@ $data = parseQuery($query);
     <!-- Main page wrapper -->
     <div class="page-container">
 
-    <?php
-        if ($form) {
-            ?>
-                <?= $form ?>
-            <?php
-        }
-        else
-        {
-    ?>
-
         <!-- Navigation / page intro -->
         <main class="main-content">
-
-        <p class="error">
-            <?=$error?>
-        </p>
-
             <section class="hero-section">
-                <h1>Speaker Home</h1>
+                
             </section>
 
             <!-- Main role / feature navigation based on your wireframe -->
             <section class="dashboard-grid">
-
                 <article class="dashboard-card">
-                    <h2> Register For Event </h2>
-                    <p> Register for an upcoming event.</p>
-                    <a href="observerRegister.php?event_id=<?= urlencode($data['event_id']) ?>" class="btn">Go to Register</a>
-                </article>
-
-                <article class="dashboard-card">
-                    <h2> Explore Booths </h2>
-                    <p> Browse booths in the upcoming Event </p>
-                    <a href="boothExplore.php?event_id=<?= urlencode($data['event_id']) ?>" class="btn">Go to Booths</a>
+                    <h1>Submitted Proposals </h1>  
+                    <?php
+                        foreach($proposal as $form)
+                        {
+                            ?>
+                            <h1>Status: <?= htmlentities($form['proposal_status'])?></h1>
+                            <h2>Title: <?= htmlentities($form['proposal_name']) ?></h2>
+                            <h3>Topic: <?= htmlentities($form['proposal_topic'])?></h3>
+                            <p>Desc: <?= htmlentities($form['proposal_description'])?></p>
+                            <?php
+                        }
+                    ?>
                 </article>
 
             </section>
+
+            <!-- Placeholder for announcements or future dynamic content -->
+            <section class="info-section">
+                
+            </section>
         </main>
-        <?php
-        }
-        ?>
 
         <!-- Footer -->
         <footer class="site-footer">
@@ -108,3 +111,4 @@ $data = parseQuery($query);
 
 </body>
 </html>
+

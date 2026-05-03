@@ -103,13 +103,13 @@ if (array_key_exists('user_id', $_SESSION)) {
                 <article class="dashboard-card">
                     <h2> Stage Request </h2>
                     <p> Request a stage space for a given event. </p>
-                    <a href="#" class="btn">Go to Stage Requests</a>
+                    <a href="speakerRequest.php" class="btn">Go to Stage Requests</a>
                 </article>
 
                 <article class="dashboard-card">
                     <h2> Proposal Status </h2>
                     <p> View status of previous stage requests. </p>
-                    <a href="#" class="btn">Go to Proposals</a>
+                    <a href="speakerStatus.php" class="btn">Go to Proposals</a>
                 </article>
 
             </section>

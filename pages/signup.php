@@ -2,6 +2,7 @@
 
 require '../vendor/autoload.php';
 require_once '../helpers/supabase.php';
+require_once '../helpers/header.php';
 
 $supabase = initializeSupabase();
 
@@ -83,6 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link href="../css/main.css"
+          type="text/css" rel="stylesheet" />
+    <link href="../css/styles.css"
+          type="text/css" rel="stylesheet" />
+
 </head>
 <body>
     <?=  $message = '' ?>
