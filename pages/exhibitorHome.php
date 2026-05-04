@@ -139,13 +139,13 @@ if (array_key_exists('user_id', $_SESSION)) {
                 <article class="dashboard-card">
                     <h2> Booth Request </h2>
                     <p> Request a booth space for a given event. </p>
-                    <a href="#" class="btn">Go to Booths</a>
+                    <a href="boothRequest.php" class="btn">Go to Booths</a>
                 </article>
 
                 <article class="dashboard-card">
                     <h2> Booth Status </h2>
                     <p> View status of previous booth requests. </p>
-                    <a href="#" class="btn">Go to Booth Status</a>
+                    <a href="boothStatus.php" class="btn">Go to Booth Status</a>
                 </article>
 
             </section>
