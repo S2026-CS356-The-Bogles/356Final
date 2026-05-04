@@ -16,14 +16,22 @@ $supabase = initializeSupabase();
 //checkLogin();
 //sessionTimer();
 
+function sanitize($value) {
+    return htmlspecialchars(stripslashes(trim($value)));
+}
+
 if (array_key_exists('user_id', $_SESSION)) {
 
     $event_id = $_GET['event_id'] ?? null;
 
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $event_id = sanitize($_POST["event"]);
+    }
+
     if (!$event_id) {
         header('Location: observerHome.php');
         exit();
-    }
+    }    
 
     $booth_query = $supabase->query
         ->from('booth')
@@ -33,6 +41,11 @@ if (array_key_exists('user_id', $_SESSION)) {
 
     $booth = parseQueryArray($booth_query);
 
+    $event_query = $supabase->from('event')
+                           ->select('*')
+                           ->execute();
+
+    $events = parseQueryArray($event_query);
 
 }
 
@@ -74,19 +87,35 @@ if (array_key_exists('user_id', $_SESSION)) {
                 <h1>Available Booths </h1> 
             </section>
 
+            <form method="POST" action="" class="postback-inline-form">
+                <label for="event">Change Event:</label>
+    
+                <select name="event" id="event">
+                    <?php foreach($events as $event){?>
+                        <option value="<?= $event['event_id']?>"
+                        <?php if ($event_id == $event['event_id']) {?>
+                            selected="selected"
+                        <?php } ?>
+                    > <?=  htmlentities($event['event_name'])?></option>
+                    <?php } ?>
+                </select>
+
+                <button type="submit">Search</button>
+            </form>
+
             <!-- Main role / feature navigation based on your wireframe -->
             <section class="layout-stack">
-                <article class="card-slate">
                     <?php
                         foreach($booth as $event)
                         {
                             ?>
-                            <h2>Booth Building: <?= htmlentities($event['booth_building']) ?></h2>
-                            <p>Booth Number: <?=  htmlentities($event['booth_number'])?></p>
+                            <article class="card-slate">
+                                <h2>Booth Building: <?= htmlentities($event['booth_building']) ?></h2>
+                                <p>Booth Number: <?=  htmlentities($event['booth_number'])?></p>
+                            </article>
                             <?php
                         }
                     ?>
-                </article>
 
             </section>
 

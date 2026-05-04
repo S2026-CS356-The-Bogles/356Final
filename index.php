@@ -78,7 +78,7 @@ $data = parseQueryArray($query);
             </section>
 
             <section class="info-section">
-                <h3>Announcements</h3>
+                <h3>Upcoming Events:</h3>
                 <section class="layout-stack">
                 <?php
                     foreach($data as $event)

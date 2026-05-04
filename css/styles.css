@@ -138,3 +138,31 @@ body {
     color: white;
     text-decoration: none;
 }
+
+.postback-inline-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; 
+    margin: 1rem 0;
+}
+
+.postback-inline-form select {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.postback-inline-form button {
+    padding: 5px 15px;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.postback-inline-form button:hover {
+    background-color: #4f46e5;
+}
