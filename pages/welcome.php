@@ -35,7 +35,7 @@ $data = parseQuery($query);
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
-<body class="main-content">
+<main>
 <?php
     if (array_key_exists('username', $_SESSION)) {
         ?>
@@ -71,7 +71,7 @@ $data = parseQuery($query);
             <?php } ?>
         </ul>
     </div>
-</body>
+</main>
 <?php
 include_once '../helpers/footer.html';
 ?>
