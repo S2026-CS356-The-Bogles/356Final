@@ -15,6 +15,8 @@ $supabase = initializeSupabase();
 checkLogin();
 sessionTimer();
 
+$database_user = 'program_user';
+
 $org_name = null;
 $org_industry = null;
 $error = null;
@@ -29,6 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $response = $supabase->from('user_speaker')->insert([
                 'speaker_id'=> $_SESSION['user_id']
             ])->execute();
+
+    $response = $supabase->from($database_user)
+                ->update(['is_speaker' => true])
+                ->eq('user_id', $_SESSION['user_id'])
+                ->execute();
 }
 
 if (array_key_exists('user_id', $_SESSION)) {

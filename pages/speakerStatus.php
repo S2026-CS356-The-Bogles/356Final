@@ -15,12 +15,7 @@ $supabase = initializeSupabase();
 
 //checkLogin();
 //sessionTimer();
-
-
-
-if ($_SESSION['is_speaker']) {
-    //
-    
+   
     $current_event_query = $supabase->from('event')
                            ->select('event_id')
                            ->execute();
@@ -35,7 +30,6 @@ if ($_SESSION['is_speaker']) {
         ->execute();
 
     $proposal = parseQueryArray($proposals_query);
-}
 
 ?>
 
@@ -72,26 +66,26 @@ if ($_SESSION['is_speaker']) {
         <!-- Navigation / page intro -->
         <main class="main-content">
             <section class="hero-section">
-                
+                <h1>Submitted Proposals </h1> 
             </section>
 
             <!-- Main role / feature navigation based on your wireframe -->
-            <section class="dashboard-grid">
-                <article class="dashboard-card">
-                    <h1>Submitted Proposals </h1>  
-                    <?php
+            <section class="layout-stack"> 
+
+                <?php
                         foreach($proposal as $form)
                         {
                             ?>
+                            <article class="card-slate">
                             <h1>Status: <?= htmlentities($form['proposal_status'])?></h1>
                             <h2>Title: <?= htmlentities($form['proposal_name']) ?></h2>
                             <h3>Topic: <?= htmlentities($form['proposal_topic'])?></h3>
                             <p>Desc: <?= htmlentities($form['proposal_description'])?></p>
+                            </article>
                             <?php
                         }
                     ?>
-                </article>
-
+                
             </section>
 
             <!-- Placeholder for announcements or future dynamic content -->

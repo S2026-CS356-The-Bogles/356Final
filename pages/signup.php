@@ -6,6 +6,8 @@ require_once '../helpers/header.php';
 
 $supabase = initializeSupabase();
 
+$database_user = 'program_user';
+
 $username = null;
 $user_fnam = null;
 $user_lname = null;
@@ -41,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         try {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $response = $supabase->from('system_user')->insert([
+            $response = $supabase->from($database_user)->insert([
                 'user_username'=> $username,
                 'user_fname'=> $user_fname,
                 'user_lname'=> $user_lname,

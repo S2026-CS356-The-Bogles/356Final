@@ -4,8 +4,19 @@ session_start();
 
 require_once 'helpers/sessionTimer.php';
 require_once 'helpers/header.php';
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'helpers/supabase.php';
 
 sessionTimer();
+
+$supabase = initializeSupabase();
+
+$query = $supabase->query
+    ->from('event')
+    ->select('*')
+    ->execute();
+
+$data = parseQueryArray($query);
 ?>
 
 <!doctype html>
@@ -68,7 +79,23 @@ sessionTimer();
 
             <section class="info-section">
                 <h3>Announcements</h3>
-                <p>No announcements yet.</p>
+                <section class="layout-stack">
+                <?php
+                    foreach($data as $event)
+                    {
+                        ?>
+                        <section class="card-slate">
+                        <h4><?= htmlentities($event['event_name']) ?></h4>
+                        <p>Event Capacity: <?=  htmlentities($event['event_capacity'])?></p>
+                        <p>Start Date: <?=  htmlentities(formatTime($event['event_start_time']))?></p>
+                        <p>End Date: <?=  htmlentities(formatTime($event['event_end_time']))?></p>
+                        <p>Location: <?=  htmlentities($event['event_location'])?></p>
+                        <p><?=  htmlentities($event['event_description'])?></p>
+                        </section>
+                        <?php
+                    }
+                ?>
+                </section>
 
             </section>
         </main>

@@ -9,6 +9,8 @@ require_once '../helpers/supabase.php';
 
 $supabase = initializeSupabase();
 
+$database_user = 'program_user';
+
 $username = null;
 $password = null;
 $error = null;
@@ -30,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   }
   else {
   $query = $supabase->query
-      ->from('system_user')
+      ->from($database_user)
       ->select('*')
       ->eq('user_username', $username)
       ->execute();

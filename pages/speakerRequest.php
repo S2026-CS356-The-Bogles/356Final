@@ -16,6 +16,8 @@ $supabase = initializeSupabase();
 //checkLogin();
 //sessionTimer();
 
+$showForm = true;
+
 $proposalTopic = null;
 $proposalTitle = null;
 $proposalDesc = null;
@@ -23,8 +25,6 @@ $proposalDesc = null;
 function sanitize($value) {
     return htmlspecialchars(stripslashes(trim($value)));
 }
-
-if ($_SESSION['is_speaker']) {
 
     $current_event_query = $supabase->from('event')
                            ->select('event_id')
@@ -43,6 +43,11 @@ if ($_SESSION['is_speaker']) {
         }
 
         else {
+
+        if (!$event_id) {
+            $message = "Error: Could not find a valid Event ID.";
+        }
+
             try{
                 
                 $response = $supabase->from('proposal')->insert([
@@ -55,6 +60,14 @@ if ($_SESSION['is_speaker']) {
                     'proposal_description'=> $proposalDesc
                 ])->execute();
 
+
+                if (isset($response->error) && $response->error != null) {
+                    $message = "Database Error: " . $response->error->details . " - " . $response->error->message;
+                } else {
+                    $showForm = false;
+                    $message = "Proposal submitted successfully!";
+                }
+
             }
             catch(Exception $e) {
                 $message = "Error submitting form: " . $e->getMessage();
@@ -63,7 +76,6 @@ if ($_SESSION['is_speaker']) {
         }
 
     }
-}
 
 ?>
 
@@ -95,6 +107,7 @@ if ($_SESSION['is_speaker']) {
     <!-- Main page wrapper -->
     <div class="page-container">
 
+    <?php if ($showForm) { ?>
         <!-- Navigation / page intro -->
         <main class="main-content">
             <section class="hero-section">
@@ -105,7 +118,7 @@ if ($_SESSION['is_speaker']) {
             <section class="dashboard-grid">
 
                 <article class="dashboard-card">
-                    <form method="POST" action="">
+                    <form method="post" action="speakerRequest.php">
                         <div class="form-group">
                             <label for="title">Title: </label>
                             <input type="text" id="title" name="title" required>
@@ -131,6 +144,15 @@ if ($_SESSION['is_speaker']) {
                 
             </section>
         </main>
+        <?php } else {  ?>
+        <section class="success-container" style="text-align: center; padding: 50px;">
+            <div class="success-card">
+                <h2 style="color: #2ecc71;">✅ Success!</h2>
+                <p><?= $message ?></p>
+                <a href="speakerHome.php" class="btn">Return to Speaker Home</a>
+            </div>
+        </section>
+        <?php   }   ?>
 
         <!-- Footer -->
         <footer class="site-footer">

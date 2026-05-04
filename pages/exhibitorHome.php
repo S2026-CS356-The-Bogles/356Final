@@ -16,6 +16,8 @@ $supabase = initializeSupabase();
 //checkLogin();
 //sessionTimer();
 
+$database_user = 'program_user';
+
 $org_name = null;
 $org_industry = null;
 $error = null;
@@ -52,6 +54,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 'exhibitor_id'=> $_SESSION['user_id'],
                 'organization_id'=> $data['organization_id']
             ])->execute();
+
+    $response = $supabase->from($database_user)
+                ->update(['is_exhibitor' => true])
+                ->eq('user_id', $_SESSION['user_id'])
+                ->execute();
     }
     else
     {

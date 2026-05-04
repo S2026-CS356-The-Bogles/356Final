@@ -71,13 +71,12 @@ if (array_key_exists('user_id', $_SESSION)) {
         <!-- Navigation / page intro -->
         <main class="main-content">
             <section class="hero-section">
-                
+                <h1>Available Booths </h1> 
             </section>
 
             <!-- Main role / feature navigation based on your wireframe -->
-            <section class="dashboard-grid">
-                <article class="dashboard-card">
-                    <h1>Avialable Booths </h1>  
+            <section class="layout-stack">
+                <article class="card-slate">
                     <?php
                         foreach($booth as $event)
                         {

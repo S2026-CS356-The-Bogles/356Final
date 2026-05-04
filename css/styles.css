@@ -68,6 +68,35 @@ body {
     margin-bottom: 1rem;
 }
 
+.layout-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-slate {
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 2rem;
+    border-radius: 16px;
+    border-left: 6px solid #6366f1; /* The unique accent */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-slate h3 { 
+    margin-bottom: 0.75rem;
+    color: #818cf8; 
+}
+
+.card-slate p { 
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
 .btn {
     display: inline-block;
     background-color: #ffd166;
@@ -82,6 +111,12 @@ body {
     background-color: white;
     padding: 1.5rem;
     border-radius: 12px;
+}
+
+.info-section .layout-stack {
+    align-items: flex-start;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .site-footer {
