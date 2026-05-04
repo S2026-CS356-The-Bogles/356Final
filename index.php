@@ -52,12 +52,6 @@ $data = parseQueryArray($query);
             <section class="dashboard-grid">
 
                 <article class="dashboard-card">
-                    <h3>Events</h3>
-                    <p>Browse or register for upcoming events.</p>
-                    <a href="#" class="btn">Go to Events</a>
-                </article>
-
-                <article class="dashboard-card">
                     <h3>Observe</h3>
                     <p>Access attendee-facing event views and updates.</p>
                     <a href="pages/observerHome.php" class="btn">Go to Observe</a>
