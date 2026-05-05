@@ -25,7 +25,7 @@ else if ($type == "loggedOut") {
     </div>
     <nav class="account-actions" id="nav-header">
         <li> <a href="../index.php"> Home </a> </li>
-        <li> <a href="../pages/account.php"> Account </a> </li>
+        <li> <a href="../pages/welcome.php"> Account </a> </li>
         <li> <a href="../pages/login.php"> Log In </a> </li>
     </nav>
 </header>
