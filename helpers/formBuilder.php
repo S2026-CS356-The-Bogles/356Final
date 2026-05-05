@@ -33,4 +33,16 @@ function registerSpeakerForm($targetPage) {
     
     return $form;
 }
+
+function registerOrganizerForm($targetPage) {
+    $form = '
+    <form method="POST" action="' . htmlspecialchars($targetPage) . '">
+        <div>
+            <button type="submit">Register as a Organizer</button>
+        </div>
+    </form>
+    ';
+    
+    return $form;
+}
 ?>

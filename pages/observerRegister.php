@@ -16,31 +16,57 @@ $supabase = initializeSupabase();
 //sessionTimer();
 
 if(array_key_exists('user_id', $_SESSION)){
+$enroll_query = $supabase
+                    ->from('event_registration')
+                    ->select('*')
+                    ->eq('user_id', $_SESSION['user_id'])
+                    ->execute();
+    
+    $all_enrolled_events = parseQueryArray(($enroll_query));
+}
 
-    $event_id = $_GET['event_id'] ?? null;
+if($_SERVER["REQUEST_METHOD"] == "GET"){
 
-    if(!$event_id) {
-        header('Location: observerHome.php');
-        exit();
+    $event_id = trim(strip_tags($_GET["event_id"]));
+
+    $tempTime = new DateTime();
+    $currTime = $tempTime->format('c');
+
+    $check = false;
+    foreach ($all_enrolled_events as $enrolled) { 
+    if ($enrolled['event_id'] == $event_id) {
+        $check = true;
+        }
+    } 
+
+    if(!$check) {
+    $response = $supabase->from('event_registration')->insert([
+                    'event_id' => $event_id,
+                    'user_id' => $_SESSION['user_id'],
+                    'submitted_date' => $currTime
+                ])->execute();
     }
+}
 
-    $current_event_query = $supabase->query
+if(array_key_exists('user_id', $_SESSION)){
+
+    //SHOW ONLY EVENTS THAT ARE APPROVED LATER !!!!!
+    $current_event_query = $supabase
                     ->from('event')
                     ->select('*')
-                    ->eq('event_id', $event_id)
+                    ->order('event_start_time', ['ascending' => false])
                     ->execute();
 
-    $current_event = parseQuery($current_event_query);
+    $data = parseQueryArray($current_event_query);
 
+    $enroll_query = $supabase
+                    ->from('event_registration')
+                    ->select('*')
+                    ->eq('user_id', $_SESSION['user_id'])
+                    ->execute();
+    
+    $all_enrolled_events = parseQueryArray(($enroll_query));
 }
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-
-}
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -78,20 +104,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </section>
 
             <!-- Main role / feature navigation based on your wireframe -->
-            <section class="dashboard-grid">
+            <section class="layout-stack">
 
-                <article class="dashboard-card">
-                <form method="POST" action="">
-                    <h1>Register For: <?= $current_event['event_name']?></h1>    
-                    <p>Event Capacity: <?=  htmlentities($current_event['event_capacity'])?></p>
-                    <p>Start Date: <?=  htmlentities(formatTime($current_event['event_start_time']))?></p>
-                    <p>End Date: <?=  htmlentities(formatTime($current_event['event_end_time']))?></p>
-                    <p>Location: <?=  htmlentities($current_event['event_location'])?></p>
-                    <p><?=  htmlentities($current_event['event_description'])?></p>
-                    <button class ="btn" type="submit">Register For this Event</button>
+                <?php
+                        foreach($data as $event)
+                        {
+                            ?>
+                            <article class="card-slate">
+                                <h2><?= htmlentities($event['event_name']) ?></h2>
+                                <p>Event Capacity: <?=  htmlentities($event['event_capacity'])?></p>
+                                <p>Start Date: <?=  htmlentities(formatTime($event['event_start_time']))?></p>
+                                <p>End Date: <?=  htmlentities(formatTime($event['event_end_time']))?></p>
+                                <p>Location: <?=  htmlentities($event['event_location'])?></p>
+                                <p><?=  htmlentities($event['event_description'])?></p>
 
-                </form>
-                </article>
+                                <?php 
+                                $check = false;
+                                foreach ($all_enrolled_events as $enrolled) { 
+                                    if ($enrolled['event_id'] == $event['event_id']) {
+                                        $check = true;
+                                    }
+                                 } 
+
+                                 if(!$check) { ?>
+                                    <a href="observerRegister.php?event_id=<?= urlencode($event['event_id']) ?>" class="btn">Register for this event</a>
+                                 <?php } else { ?>
+                                    <a class="btn" style="background-color:#91d775"> Already Registered!</a>
+                                 <?php } ?>
+                            </article>
+                            <?php
+                        }
+                    ?>
 
             </section>
 

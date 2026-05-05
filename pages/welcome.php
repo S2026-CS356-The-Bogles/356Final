@@ -18,7 +18,7 @@ $username = $_SESSION['username'];
 
 $query = $supabase->query
     ->from($database_user)
-    ->select('is_exhibitor, is_observer, is_organizer, is_speaker')
+    ->select('is_exhibitor, is_observer, is_organizer, is_speaker, is_admin')
     ->eq('user_username', $username)
     ->execute();
 
@@ -67,7 +67,10 @@ $data = parseQuery($query);
             <li> <a href="speakerHome.php"> Speaker Home </a> </li>
             <?php } ?>
             <?php if ($data['is_organizer']){?>
-            <li> <a href="#"> Organizer Home </a> </li>
+            <li> <a href="organizerHome.php"> Organizer Home </a> </li>
+            <?php } ?>
+            <?php if ($data['is_admin']){?>
+            <li> <a href="adminHome.php"> Admin Home </a> </li>
             <?php } ?>
         </ul>
     </div>

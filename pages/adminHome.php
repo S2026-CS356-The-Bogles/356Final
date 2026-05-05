@@ -1,34 +1,49 @@
 <?php
 session_start();
 
-
+$pageTitle = "Admin Home";
 
 require_once '../helpers/checkLogin.php';
-require_once __DIR__ . '/../vendor/autoload.php';
 require_once '../helpers/sessionTimer.php';
 require_once '../helpers/header.php';
+require_once '../helpers/formBuilder.php';
+require '../vendor/autoload.php';
 require_once '../helpers/supabase.php';
-
-$pageTitle = "observerHome";
 
 $supabase = initializeSupabase();
 
+//UNCOMMENT FOR PRODUCTION
 //checkLogin();
 //sessionTimer();
 
-$query = $supabase->query
-    ->from('event')
-    ->select('*')
-    ->execute();
+$database_user = 'program_user';
 
-$data = parseQueryArray($query);
+$org_name = null;
+$org_industry = null;
+$error = null;
+$data = null;
 
+function sanitize($value) {
+    return htmlspecialchars(stripslashes(trim($value)));
+}
 
+if (array_key_exists('user_id', $_SESSION)) {
+    $user_id = $_SESSION['user_id'];
 
+    $query = $supabase->query
+        ->from($database_user)
+        ->select('*')
+        ->eq('exhibitor_id', $user_id)
+        ->execute();
 
+    $data = parseQuery($query);
+
+    if (!$data['is_admin']) {
+        header('welcome.php');
+        exit();
+    }
+}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,35 +75,30 @@ $data = parseQueryArray($query);
 
         <!-- Navigation / page intro -->
         <main class="main-content">
+
+        <p class="error">
+            <?=$error?>
+        </p>
+
             <section class="hero-section">
-                
+                <h1>Admin Home</h1>
             </section>
 
             <!-- Main role / feature navigation based on your wireframe -->
             <section class="dashboard-grid">
+
                 <article class="dashboard-card">
-                <h1>Avialable Events </h1>
-                <?php
-                    foreach($data as $event)
-                    {
-                        ?>
-                        <h2><?= htmlentities($event['event_name']) ?></h2>
-                        <p>Event Capacity: <?=  htmlentities($event['event_capacity'])?></p>
-                        <p>Start Date: <?=  htmlentities(formatTime($event['event_start_time']))?></p>
-                        <p>End Date: <?=  htmlentities(formatTime($event['event_end_time']))?></p>
-                        <p>Location: <?=  htmlentities($event['event_location'])?></p>
-                        <p><?=  htmlentities($event['event_description'])?></p>
-                        <a href="observerRegister.php?event_id=<?= urlencode($event['event_id']) ?>" >Register for this event</a>
-                        <?php
-                    }
-                ?>
+                    <h2> Booth Review </h2>
+                    <p> Review booth requests for a given event. </p>
+                    <a href="boothRequest.php" class="btn">Go to Review</a>
                 </article>
 
-            </section>
+                <article class="dashboard-card">
+                    <h2> Speaker Proposal </h2>
+                    <p> Review of speaker event porposal requests. </p>
+                    <a href="boothStatus.php" class="btn">Go to Review</a>
+                </article>
 
-            <!-- Placeholder for announcements or future dynamic content -->
-            <section class="info-section">
-                
             </section>
         </main>
 
@@ -103,4 +113,3 @@ $data = parseQueryArray($query);
 
 </body>
 </html>
-

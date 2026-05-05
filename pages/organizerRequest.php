@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$pageTitle = "Booth Request Form";
+$pageTitle = "Event Request Form";
 
 require_once '../helpers/checkLogin.php';
 require_once '../helpers/sessionTimer.php';
@@ -22,38 +22,44 @@ function sanitize($value) {
     return htmlspecialchars(stripslashes(trim($value)));
 }
 
-    $event_query = $supabase->from('event')
-                           ->select('*')
-                           ->execute();
-
-    $events = parseQueryArray($event_query);
-
-    $org_query = $supabase->from('exhibitor_organization')
-                           ->select('*')
-                           ->execute();
-
-    $orgs = parseQueryArray($org_query);
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $event = sanitize($_POST["event"]);
-        $org = sanitize($_POST["org"]);
-        $proposalBuilding = sanitize($_POST["building"]);
-        $proposalDesc = sanitize($_POST["desc"]);
+        $eventName = sanitize($_POST["eventName"]);
+        $eventCap = sanitize($_POST["eventCap"]);
+
+        $eventStart = sanitize($_POST["eventStart"]);
+        $eventEnd = sanitize($_POST["eventEnd"]);
+
+        $Starttemp = new DateTime($eventStart);
+        $Endtemp = new DateTime($eventEnd);
+        $eventStartStamp = $Starttemp->format('c');
+        $eventEndStamp = $Endtemp->format('c');
+
+        $eventLoc = sanitize($_POST["eventLoc"]);
+        $eventDesc = sanitize($_POST["eventDesc"]);
+
+        $query = $supabase->from('user_organizer')
+                    ->select('*')
+                    ->eq('organizer_id', $_SESSION['user_id'])
+                    ->execute();
+
+        $data = parseQuery($query);
         
-        if(empty($event) || empty($org) || empty($proposalBuilding) || empty($proposalDesc)) {
+        if(empty($eventName) || empty($eventCap) || empty($eventStart) || empty($eventEnd) || empty($eventLoc) || empty($eventDesc)) {
             $message = "All fields required";
         }
 
         else {
 
             try{
-                
-                $response = $supabase->from('booth')->insert([
-                    'booth_building' => $proposalBuilding,
-                    'organization_id' => $org,
-                    'event_id' => $event,
-                    'description' => $proposalDesc,
-                    'user_id' => $_SESSION['user_id']
+                // TEST AFTER DB UPDATES WITH EVENT
+                $response = $supabase->from('event')->insert([
+                    'event_name' => $eventName,
+                    'event_capacity' => $eventCap,
+                    'event_start_time' => $eventStartStamp,
+                    'event_end_time' => $eventEndStamp,
+                    'event_location' => $eventLoc,
+                    'event_description' => $eventDesc,
+                    'user_id' => $data['organizer_id']
                 ])->execute();
 
                 if (isset($response->error) && $response->error != null) {
@@ -113,34 +119,38 @@ function sanitize($value) {
             <section class="dashboard-grid">
 
                 <article class="dashboard-card">
-                    <form method="post" action="boothRequest.php">
+                    <form method="post" action="organizerRequest.php">
+
                         <div class="form-group">
-                            <label for="event">Event: </label>
-                            <select name="event">
-                                <?php foreach($events as $event){?>
-                                    <option value="<?= $event['event_id']?>"> <?=  htmlentities($event['event_name'])?></option>
-                                <?php } ?>
-                            </select>
+                            <label for="name">Event Name:</label>
+                            <input type="text" id="name" name="eventName" required="required">
                         </div>
 
                         <div class="form-group">
-                            <label for="org">Organization: </label>
-                            <select name="org">
-                                <?php foreach($orgs as $org){?>
-                                    <option value="<?=$org['organization_id']?>"><?=  htmlentities($org['organization_name'])?></option>
-                                <?php } ?>
-                            </select>
+                            <label for="cap">capacity:</label>
+                            <input type="number" min="1" max="9999" id="cap" name="eventCap" required="required">
                         </div>
 
                         <div class="form-group">
-                            <label for="building">Building:</label>
-                            <input type="text" id="building" name="building" required>
+                            <label for="start">Start Date:</label>
+                            <input type="datetime-local" id="start" name="eventStart" min="<?= date('Y-m-d');?>" required="required">
                         </div>
 
                         <div class="form-group">
-                            <label for="desc">Booth Description:</label>
-                            <input type="text" id="desc" name="desc" required>
+                            <label for="end">End Date:</label>
+                            <input type="datetime-local" id="end" name="eventEnd" min="<?= date('Y-m-d'); ?>" required="required">
                         </div>
+
+                        <div class="form-group">
+                            <label for="loc">Location:</label>
+                            <input type="text" id="loc" name="eventLoc" required="required">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="desc">Description:</label>
+                            <input type="text" id="desc" name="eventDesc" required="required">
+                        </div>
+
                         <button type="submit">Submit Form</button>
                     </form>
                 </article>
@@ -157,7 +167,7 @@ function sanitize($value) {
             <div class="success-card">
                 <h2 style="color: #2ecc71;">✅ Success!</h2>
                 <p><?= $message ?></p>
-                <a href="exhibitorHome.php" class="btn">Return to Exhibitor Home</a>
+                <a href="organizerHome.php" class="btn">Return to Organizer Home</a>
             </div>
         </section>
         <?php   }   ?>
