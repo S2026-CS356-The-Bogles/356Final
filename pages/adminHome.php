@@ -23,17 +23,13 @@ $org_industry = null;
 $error = null;
 $data = null;
 
-function sanitize($value) {
-    return htmlspecialchars(stripslashes(trim($value)));
-}
-
 if (array_key_exists('user_id', $_SESSION)) {
     $user_id = $_SESSION['user_id'];
 
     $query = $supabase->query
         ->from($database_user)
         ->select('*')
-        ->eq('exhibitor_id', $user_id)
+        ->eq('user_id', $user_id)
         ->execute();
 
     $data = parseQuery($query);
@@ -88,15 +84,21 @@ if (array_key_exists('user_id', $_SESSION)) {
             <section class="dashboard-grid">
 
                 <article class="dashboard-card">
+                    <h2> Event Review </h2>
+                    <p> Review event requests. </p>
+                    <a href="eventReview.php" class="btn">Go to Review</a>
+                </article>
+
+                <article class="dashboard-card">
                     <h2> Booth Review </h2>
                     <p> Review booth requests for a given event. </p>
-                    <a href="boothRequest.php" class="btn">Go to Review</a>
+                    <a href="boothReview.php" class="btn">Go to Review</a>
                 </article>
 
                 <article class="dashboard-card">
                     <h2> Speaker Proposal </h2>
                     <p> Review of speaker event porposal requests. </p>
-                    <a href="boothStatus.php" class="btn">Go to Review</a>
+                    <a href="speakerReview.php" class="btn">Go to Review</a>
                 </article>
 
             </section>
