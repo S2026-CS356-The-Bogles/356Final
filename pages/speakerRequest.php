@@ -53,7 +53,7 @@ function sanitize($value) {
                 $response = $supabase->from('proposal')->insert([
                     'speaker_id'=> $_SESSION['user_id'],
                     'event_id' => $event_id,
-                    'proposal_status' => 'Submitted',
+                    'proposal_status' => 'p',
                     'is_approved' => false,
                     'proposal_topic'=> $proposalTopic,
                     'proposal_name'=> $proposalTitle,

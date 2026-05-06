@@ -73,7 +73,7 @@ $supabase = initializeSupabase();
                         foreach($proposal as $form)
                         {
                             ?>
-                            <article class="card-slate">
+                            <article class="card-slate-<?=$form['booth_current_status']?>">
                             <h1>Booth Building: <?= htmlentities($form['booth_building'])?></h1>
                             <h2>Event: <?= htmlentities($form['event']['event_name']) ?></h2>
                             <h3>Organization: <?= htmlentities($form['exhibitor_organization']['organization_name'])?></h3>
